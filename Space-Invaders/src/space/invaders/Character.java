@@ -3,6 +3,7 @@ package space.invaders;
 /**
  * @author joaopedro 12731314
  */
+
 public abstract class Character { //things that will move on the screen
     private int life; //(min: 0) (max: 100)
     private int x; //horizontal position of the entity
