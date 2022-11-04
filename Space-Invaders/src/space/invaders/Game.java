@@ -8,11 +8,15 @@ import java.awt.AWTException;
  * @author joaopedro 12731314
  */
 
+
 public class Game{
     
-    private char[][] map = new char[18][33];
+    public static final int LINHAS = 10;
+    public static final int COLUNAS = 33;
     
-    
+    private char[][] map = new char[LINHAS][COLUNAS];
+    int score = 0;
+    SpaceShip nave = new SpaceShip(1, 4);
     
     
     
@@ -21,9 +25,7 @@ public class Game{
     
     
     void gameLoop() throws AWTException{
-         
         gameINIT();
-        
     }
     
     void gameINIT() throws AWTException{
@@ -81,144 +83,106 @@ public class Game{
             System.out.println();
             robo.delay(1000);
             Gameplay();
-        }
-        
-        
+        } 
     }
     
     void Gameplay() throws AWTException{
         ClearScreen();
         CreateMap();
+        SetNave();
         SetAliens();
         SetBarreiras();
+        //AtualizaJogo();
         
         Scanner input = new Scanner(System.in);
-        char Input = input.next(".").charAt(0);
+        char Input = '0';
         
         
-        if(Input == 'q'){
-            Quit();
-        }
-        
-        while(Input != 'q'){
+        while(Input != 'q' && Input != 'Q'){
+            
             Input = input.next(".").charAt(0);
-            changeGame(Input);
-            AtualizaJogo();
-        }
-        
-        
-        
+            
+            switch (Input) {
+                case 'q':
+                    Quit();
+                    return;
+                case 'd':
+                case 'a':
+                    changeGame(Input);
+                    MudaFrame();
+                    AtualizaJogo();
+                    break;
+                default:
+                    System.out.println("Comando invalido.");
+                    break;
+            }
+        } 
     }
     
     
     
     void ClearScreen() { for(int i = 0; i < 19; i++) System.out.println(); }
     
-    void CreateMap(){
-        //int height = 10;
-        //map = new char[18][33]; 
-        int score = 0;
-        System.out.println("| " + "Score: " + score + "                      |");
-        System.out.println(" ________________________________ ");
-  
     
+    void CreateMap(){
         
+        System.out.println("| " + "Score: " + score + "                        |");
+        System.out.println(" _________________________________ ");
+          
         //33 colunas
         //18 linhas
-        //System.out.println(linha.length);
+        
         int i = 0;
         int j = 0;
-        for(i = 0; i < 10; i++){
+        for(i = 0; i < LINHAS; i++){
             System.out.print('|');
-            for(j = 0; j < 33; j++){
+            for(j = 0; j < COLUNAS; j++){
                 System.out.print(map[i][j] = ' ');
             }
-            if(i < 17){
-                System.out.println('|');
-            }           
+                System.out.println('|');           
         }
-        System.out.println();
         System.out.println(" ________________________________ ");
         
-      
-        
-        SpaceShip nave = new SpaceShip(1, 4);
-        map[10][17] = 'A';
         
         ClearScreen();
         
-        System.out.println("| " + "Score: " + score + "                   |");
-        System.out.println("| _______________________________ |");
-        for(i = 0; i < 10; i++){
-            System.out.print('|');
-            for(j = 0; j < 33; j++){
-                System.out.print(map[i][j]);
-            }
-            
-            System.out.println('|');
-                    
-        }
-        System.out.println();
-        System.out.println("| _______________________________ |");
-         
-        
     }
-    
     
     
     void AtualizaJogo(){
         
-        int score = 0;
-        System.out.println("| " + "Score: " + score + "                      |");
-        System.out.println(" ________________________________ ");
+        ClearScreen();
+        
+        System.out.println("| " + "Score: " + score + "                        |");
+        System.out.println(" _________________________________ ");
+        
+        //MudaFrame();
   
         int i = 0;
         int j = 0;
-        for(i = 0; i < 10; i++){
+        for(i = 0; i < LINHAS; i++){
             System.out.print('|');
-            for(j = 0; j < 33; j++){
+            for(j = 0; j < COLUNAS; j++){
                 System.out.print(map[i][j]);
             }
-            if(i < 17){
-                System.out.println('|');
-            }           
+            System.out.println('|');        
         }
-        System.out.println();
-        System.out.println(" ________________________________ ");
-        
-      
-        
-        //SpaceShip nave = new SpaceShip(1, 4);
-        //map[9][17] = 'A';
-        
-        ClearScreen();
-        
-        System.out.println("| " + "Score: " + score + "                   |");
         System.out.println("| _______________________________ |");
-        for(i = 0; i < 10; i++){
-            System.out.print('|');
-            for(j = 0; j < 33; j++){
-                System.out.print(map[i][j]);
-            }
-            
-            System.out.println('|');
-                    
-        }
-        System.out.println();
-        System.out.println("| _______________________________ |");
-        
+       
+       
     }
     
     
     void SetBarreiras(){
-        for(int j = 0; j < 20; j = j + 5){ //10 colunas de aliens
-            map[9][j] = '-';
-        }
-        
+        for(int j = 0; j < 33; j = j + 5){ //10 colunas de aliens
+            map[8][j] = '=';
+        }  
     }
     
     
-    
+    void SetNave(){
+        map[9][16] = 'A';
+    }
     
     
     void SetAliens(){
@@ -231,8 +195,29 @@ public class Game{
     
     
     void changeGame(char Input){
-        if(Input == 'd'){ //nave pro lado direito
-            
+        if(Input == 'd' || Input == 'D'){ //nave pro lado direito
+            for(int j = 0; j < 33; j++){
+                if(j == 32){
+                    return;
+                }
+                if(map[9][j] == 'A'){
+                    if(map[9][32] == 'A'){
+                        return;
+                    }
+                    map[9][j] = ' ';
+                    map[9][j+1] = 'A';
+                    return;
+                }
+            }
+        }
+        
+        if(Input == 'a' || Input == 'A'){ //nave pro lado esquerdo
+            for(int j = 0; j < 32; j++){
+                if(map[9][j+1] == 'A'){
+                    map[9][j+1] = ' ';
+                    map[9][j] = 'A';
+                }
+            }
         }
     }
     
@@ -249,18 +234,27 @@ public class Game{
         System.out.println();
         System.out.println();
         System.out.println();
-        robo.delay(3000);
+        robo.delay(1000);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    void MudaFrame(){
+        
+        //percorre o mapa inteiro em busca de aliens, para atualizar a posicao deles
+        
+        for(int i = 0; i < LINHAS; i++){ //4 linhas aliens 
+            for(int j = 0; j < COLUNAS -2; j++){ //10 colunas de aliens
+                if(j == COLUNAS -1){
+                    if(map[i][j] == 'x'){
+                        map[i][j] = ' ';
+                        map[i+1][j] = 'x';
+                    }
+                }
+                if(map[i][j] == 'x'){
+                    map[i][j] = ' ';
+                    map[i][j+1] = 'x';
+                }
+            }
+        }
+    }
+ 
 }  
