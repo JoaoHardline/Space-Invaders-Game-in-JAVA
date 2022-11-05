@@ -13,11 +13,15 @@ public class Game{
     
     public static final int LINHAS = 10;
     public static final int COLUNAS = 33;
+    //private ArrayList<Character> cria;
     
-    private char[][] map = new char[LINHAS][COLUNAS];
+    public char[][] map = new char[LINHAS][COLUNAS];
     int score = 0;
-    SpaceShip nave = new SpaceShip(1, 4);
-    
+    SpaceShip nave = new SpaceShip(1, 4, 3, 'A'); //valores nao oficiais
+    Aliens aliens = new Aliens(4,10, 1, 'x'); //valores nao oficiais
+    Shot tiro = new Shot(4,7, 1, '|'); //valores nao oficiais
+    Barrier barreiras = new Barrier(1, 1, 2, '=');
+    char Input = '0';
     
     
     
@@ -38,12 +42,12 @@ public class Game{
         System.out.println();
         System.out.println();
         System.out.println("    Instructions: ");
-        System.out.println("    1. Press SPACE BAR to shoot.");
-        System.out.println("    2. Press RIGHT ARROW and LEFT ARROW to move your spaceship.");
+        System.out.println("    1. Press \"SPACE BAR\" to shoot.");
+        System.out.println("    2. Press \"A\" to move LEFT or \"D\" to move Right");
         System.out.println();
         System.out.println();
-        System.out.println("    \uD83D\uDE08" + " Press S to START the invasion!"); //com emogi
-        System.out.println("    \uD83D\uDE21" + " Press Q to QUIT the Game."); //com emogi
+        System.out.println("    \uD83D\uDE08" + " Press \"S\" to START the invasion!"); //com emogi
+        System.out.println("    \uD83D\uDE21" + " Press \"Q\" to QUIT the Game."); //com emogi
         
         System.out.println();
         System.out.println();
@@ -89,14 +93,12 @@ public class Game{
     void Gameplay() throws AWTException{
         ClearScreen();
         CreateMap();
-        SetNave();
-        SetAliens();
-        SetBarreiras();
-        //AtualizaJogo();
+        nave.SetNave(map);
+        aliens.SetAliens(map);
+        barreiras.SetBarreiras(map);
+        AtualizaJogo();
         
-        Scanner input = new Scanner(System.in);
-        char Input = '0';
-        
+        Scanner input = new Scanner(System.in);       
         
         while(Input != 'q' && Input != 'Q'){
             
@@ -108,7 +110,6 @@ public class Game{
                     return;
                 case 'd':
                 case 'a':
-                    changeGame(Input);
                     MudaFrame();
                     AtualizaJogo();
                     break;
@@ -119,12 +120,9 @@ public class Game{
         } 
     }
     
-    
-    
     void ClearScreen() { for(int i = 0; i < 19; i++) System.out.println(); }
     
-    
-    void CreateMap(){
+    public void CreateMap(){
         
         System.out.println("| " + "Score: " + score + "                        |");
         System.out.println(" _________________________________ ");
@@ -148,7 +146,6 @@ public class Game{
         
     }
     
-    
     void AtualizaJogo(){
         
         ClearScreen();
@@ -171,30 +168,13 @@ public class Game{
        
        
     }
-    
-    
-    void SetBarreiras(){
-        for(int j = 0; j < 33; j = j + 5){ //10 colunas de aliens
-            map[8][j] = '=';
-        }  
-    }
-    
+   
     
     void SetNave(){
         map[9][16] = 'A';
     }
-    
-    
-    void SetAliens(){
-        for(int i = 0; i < 4; i++){ //4 linhas aliens 
-            for(int j = 0; j < 20; j = j + 2){ //10 colunas de aliens
-                map[i][j] = 'x';
-            }
-        }
-    }
-    
-    
-    void changeGame(char Input){
+   
+    void changeNave(char Input){
         if(Input == 'd' || Input == 'D'){ //nave pro lado direito
             for(int j = 0; j < 33; j++){
                 if(j == 32){
@@ -221,8 +201,6 @@ public class Game{
         }
     }
     
-    
-    
     void Quit() throws AWTException{
         Robot robo = new Robot();
         ClearScreen();
@@ -239,22 +217,43 @@ public class Game{
 
     void MudaFrame(){
         
+        changeNave(Input);
+        
         //percorre o mapa inteiro em busca de aliens, para atualizar a posicao deles
         
-        for(int i = 0; i < LINHAS; i++){ //4 linhas aliens 
-            for(int j = 0; j < COLUNAS -2; j++){ //10 colunas de aliens
-                if(j == COLUNAS -1){
+        for(int i = 0; i < LINHAS-1; i++){ 
+            for(int j = 0; j < COLUNAS-1; j++){ 
+                if(j == COLUNAS-2){
                     if(map[i][j] == 'x'){
                         map[i][j] = ' ';
                         map[i+1][j] = 'x';
+                        return;
                     }
                 }
                 if(map[i][j] == 'x'){
                     map[i][j] = ' ';
                     map[i][j+1] = 'x';
+                    return;
                 }
             }
         }
-    }
+        
+        
+        
+        for(int i = 0; i < LINHAS-1; i++){ 
+            for(int j = 0; j < COLUNAS-1; j += 2){ 
+                if(j == COLUNAS-2){
+                    if(map[i][j] == 'x'){
+                        map[i][j] = ' ';
+                        map[i+1][j] = 'x';
+                        return;
+                    }
+                }
+                cria.add(new Aliens(i, j));
+                }
+            }
+        }
+        
+         
  
 }  

@@ -7,8 +7,7 @@ import java.awt.AWTException;
 
 public class SpaceInvaders {
 
-    public static void main(String[] args) throws AWTException {
-       
+    public static void main(String[] args) throws AWTException {     
         Game game = new Game();
         game.gameLoop();
     }
