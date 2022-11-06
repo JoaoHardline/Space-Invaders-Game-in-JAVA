@@ -18,11 +18,12 @@ public class Game{
     public char[][] map = new char[LINHAS][COLUNAS];
     int score = 0;
     SpaceShip nave = new SpaceShip(1, 4, 3, 'A'); //valores nao oficiais
-    Alien alien = new Alien(4,7, 1, 'x'); //valores nao oficiais
-    Shot tiro = new Shot(4,7, 1, '|'); //valores nao oficiais
+    //Alien alien = new Alien(4,7, 1, 'x'); //valores nao oficiais
+    //Shot tiro = new Shot(4,7, 1, '|'); //valores nao oficiais
     Barrier barreiras = new Barrier(1, 1, 2, '=');
     Exercito exercito = new Exercito();
     char Input = '0';
+    
     
     
     //x (linhas)
@@ -34,10 +35,47 @@ public class Game{
         gameINIT();
     }
     
+    void abertura() throws AWTException{
+        Robot robo = new Robot();
+        ClearScreen();
+        System.out.println("*");
+        System.out.println();
+        System.out.println("                    *");
+        System.out.println("                                                            *");
+        System.out.println("     █▀ █▀█ ▄▀█ █▀▀ █▀▀   █ █▄░█ █░█ ▄▀█ █▀▄ █▀▀ █▀█ █▀ \n" +
+"     ▄█ █▀▀ █▀█ █▄▄ ██▄   █ █░▀█ ▀▄▀ █▀█ █▄▀ ██▄ █▀▄ ▄█ ");
+        System.out.println();
+        System.out.println();
+        System.out.println("     █▀▄ █▀█ █▀█ █▀▄▀█ █▀▀ █▀▄   █▀▀ █▀▄ █ ▀█▀ █ █▀█ █▄░█\n" +
+"     █▄▀ █▄█ █▄█ █░▀░█ ██▄ █▄▀   ██▄ █▄▀ █ ░█░ █ █▄█ █░▀█");
+        System.out.println("            *");
+        System.out.println();
+        System.out.println("    *");
+        System.out.println("                                                            *");
+        robo.delay(3000);
+        ClearScreen();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("        Made by João Pedro G. Ferreira With ♡");
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        robo.delay(3000);
+    }
+    
     void gameINIT() throws AWTException{
         
         Robot robo = new Robot();
-        //tela inicial
+        //TELA DE ABERTURA
+        abertura();
+        //TELA INICIAL
+        ClearScreen();
         System.out.println();
         System.out.println();
         System.out.println("    ----------- Welcome to Space Invaders: Doomed Edition -----------");
@@ -61,7 +99,7 @@ public class Game{
         char command = input.next(".").charAt(0);
         
         while(command != 'q' && command != 's'){
-            System.out.println("    Comando invalido, Digite S para jogar ou Q para sair");
+            System.out.println("    Comando invalido, Digite \"S\" para jogar ou \"Q\" para sair");
             command = input.next(".").charAt(0);
         }
         if (command == 'q'){
