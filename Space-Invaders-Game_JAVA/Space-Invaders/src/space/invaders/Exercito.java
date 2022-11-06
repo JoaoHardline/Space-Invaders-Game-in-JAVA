@@ -66,8 +66,13 @@ public class Exercito {
                 sentido++;
             }
         }
-
     }
     
-    
+    public void reiniciaExercito(char[][] map){
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 10; j++){
+                map[i][2*j] = exercito[i][j].getSimbolo();
+            }
+        }
+    }
 }

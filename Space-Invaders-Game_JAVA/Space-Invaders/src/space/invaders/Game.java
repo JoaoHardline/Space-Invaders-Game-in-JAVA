@@ -2,38 +2,36 @@ package space.invaders;
 import java.util.*;
 import java.awt.Robot;
 import java.awt.AWTException;
-//import java.awt.event.KeyEvent;
 
-/**
+/*
  * @author joaopedro 12731314
  */
-
 
 public class Game{
     
     public static final int LINHAS = 10;
     public static final int COLUNAS = 33;
-    
+    //MAPA É UMA MATRIZ DE 10X33
     
     public char[][] map = new char[LINHAS][COLUNAS];
-    int score = 0;
-    SpaceShip nave = new SpaceShip(1, 4, 3, 'A'); //CRIA NAVE
-    //Alien alien = new Alien(4,7, 1, 'x'); //valores nao oficiais
-    //Shot tiro = new Shot(4,7, 1, '|'); //valores nao oficiais
-    Barrier barreiras = new Barrier(1, 1, 2, '=');
-    Exercito exercito = new Exercito();
-    char Input = '0';
     
+    int score = 0;
+    int lifes = 3;
+    
+    SpaceShip nave = new SpaceShip(1, 4, 3, 'A'); //CRIA NAVE
+    Barrier barreiras = new Barrier(1, 1, 2, '='); //CRIA BARREIRA
+    Exercito exercito = new Exercito(); //CRIA EXERCITO DE ALIENS
+    
+    char Input = '0';
      
     //X (LINHAS)
     //Y (COLUNAS)
     
-   
     void gameLoop() throws AWTException{
         gameINIT();
     }
     
-    void abertura() throws AWTException{
+    void gameOpening() throws AWTException{
         Robot robo = new Robot();
         ClearScreen();
         System.out.println("*");
@@ -50,12 +48,10 @@ public class Game{
         System.out.println();
         System.out.println("    *");
         System.out.println("                                                            *");
-        robo.delay(000);
+        System.out.println();
+        System.out.println();
+        robo.delay(1000);
         ClearScreen();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
         System.out.println("        Made by João Pedro G. Ferreira With ♡");
         System.out.println();
         System.out.println();
@@ -64,15 +60,16 @@ public class Game{
         System.out.println();
         System.out.println();
         System.out.println();
-        robo.delay(000);
+        robo.delay(1000);
     }
     
     void gameINIT() throws AWTException{
         
         Robot robo = new Robot();
-        //TELA DE ABERTURA
-        abertura();
-        //TELA INICIAL
+        //OPENING SCREEN
+        gameOpening();
+        
+        //MENU SCREEN
         ClearScreen();
         System.out.println();
         System.out.println();
@@ -84,56 +81,41 @@ public class Game{
         System.out.println("    2. Press \"A\" to move LEFT or \"D\" to move Right");
         System.out.println();
         System.out.println();
-        System.out.println("    \uD83D\uDE08" + " Press \"S\" to START the invasion!"); //com emogi
-        System.out.println("    \uD83D\uDE21" + " Press \"Q\" to QUIT the Game."); //com emogi
+        System.out.println("    \uD83D\uDE08" + " Press \"S\" to START the invasion!"); //COM EMOGI
+        System.out.println("    \uD83D\uDE21" + " Press \"Q\" to QUIT the Game."); //COM EMOGI
         
         System.out.println();
         System.out.println();
         System.out.println();
         
         
-        //pick users command (play or quit)
+        //PICK USERS COMMAND (PLAY OR QUIT)
         Scanner input = new Scanner(System.in);
         char command = input.next(".").charAt(0);
         
-        while(command != 'q' && command != 's'){
+        while(command != 'q' && command != 's' && command != 'Q' && command != 'S'){
             System.out.println("    Comando invalido, Digite \"S\" para jogar ou \"Q\" para sair");
             command = input.next(".").charAt(0);
         }
-        if (command == 'q'){
+        
+        if (command == 'q' || command == 'Q'){ //QUIT GAME
             ClearScreen();
-            System.out.println("    Fechando o jogo...");
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            robo.delay(3000);
+            Quit();
             
-        }else{ //inicio do gameplay
+        }else{ //INITIALIZE GAMEPLAY
             ClearScreen();
+            
             System.out.println("    Aliens demoniacos estao invadindo a terra!");
             System.out.println("    PREPARE-SE!");
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            robo.delay(1000);
+            for(int i = 0; i < 7; i++) System.out.println();
+            robo.delay(3000);
+            
             Gameplay();
         } 
     }
     
     void CreateMap(){
         ClearScreen();
-        
-        System.out.println("| " + "Score: " + score + "                        |");
-        System.out.println(" _________________________________ ");
-        
 
         for(int i = 0; i < LINHAS; i++){
             System.out.print('|');
@@ -142,9 +124,6 @@ public class Game{
             }
             System.out.println('|');        
         }
-        System.out.println("| _______________________________ |");
-       
-       
     }
     
     void Gameplay() throws AWTException{
@@ -169,11 +148,16 @@ public class Game{
                 case 'd':
                 case 'a':
                     LimpaRastro();
-                    //nave.SetNave(map);
                     barreiras.SetBarreiras(map);
                     nave.changeNave(Input, map);
                     exercito.mover(map);
                     exercito.alocaTela(map);
+                    
+                    for(int j = 0; j < COLUNAS; j++){
+                        if(map[9][j] == '☠'){ //SE TIVER ALGUM ALIEN NA LINHA DA NAVE (PERDEU)
+                            gameOver();
+                        }
+                    }    
                     AtualizaFrame();
                     break;
                 default:
@@ -181,6 +165,16 @@ public class Game{
                     break;
             }
         } 
+    }
+    
+    void gameOver() throws AWTException{
+        ClearScreen();
+        lifes = 3; //REINICIA CONTADOR DE VIDA
+        Robot robo = new Robot();
+        System.out.println("Você perdeu, a terra agora foi invadida por DEMÔNIOS!!!");
+        for(int i = 0; i < 7; i++) System.out.println();
+        robo.delay(3000);
+        gameINIT(); //VOLTA PRO INICIO DO JOGO
     }
     
     void ClearScreen() { for(int i = 0; i < 19; i++) System.out.println(); }
@@ -202,7 +196,17 @@ public class Game{
         
         ClearScreen();
         
-        System.out.println("| " + "Score: " + score + "                        |");
+        switch(lifes){ //DECIDE QUANTAS VIDAS EXIBIR
+            case 1:
+              System.out.println("| " + "Score: " + score + "          " + "Lifes: " + "\u001B[31m❤️    \u001B[0m" + " |");
+              break;
+            case 2:
+                System.out.println("| " + "Score: " + score + "         " + "Lifes: " + "\u001B[31m❤️ ❤️  \u001B[0m" + " |");
+                break;
+            case 3:
+                System.out.println("| " + "Score: " + score + "         " + "Lifes: " + "\u001B[31m❤️ ❤️ ❤️\u001B[0m" + "|");
+                break;
+        }
         System.out.println(" _________________________________ ");
         
 
@@ -228,18 +232,13 @@ public class Game{
         
         if(Input == 's'){
             ClearScreen();
-            System.out.println("    Fechando o jogo...");
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            robo.delay(1000);
+            System.out.println("    Fechando o jogo... Obrigado por Jogar!");
+            for(int i = 0; i < 7; i++) System.out.println();
+            robo.delay(3000);
             System.exit(0);
+            
         }else{
-            Input = '0';
+            gameINIT();
         }
         
     }
