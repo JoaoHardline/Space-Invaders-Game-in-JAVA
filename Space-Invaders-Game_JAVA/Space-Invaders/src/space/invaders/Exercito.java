@@ -50,14 +50,14 @@ public class Exercito {
                 }
                 sentido++;
            }
-        }else{ //indo pra esquerda
-            if(exercito[0][0].getY() > 0){ //se puder ir para esquerda
+        }else{ //INDO PARA ESQUERDA
+            if(exercito[0][0].getY() > 0){ //SE PUDER IR PRA ESQUERDA
                 for(i = 0; i < 5; i++){
                     for(j = 0; j < 10; j++){
                         exercito[i][j].decrementaPosY();
                     }
                 }
-            }else{
+            }else{ //VAI PRA LINHA DEBAIXO
                 for(i = 0; i < 5; i++){
                     for(j = 0; j < 10; j++){
                         exercito[i][j].incrementaPosX();

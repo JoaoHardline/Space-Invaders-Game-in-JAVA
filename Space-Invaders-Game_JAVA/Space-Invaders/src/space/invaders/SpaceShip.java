@@ -16,12 +16,12 @@ public class SpaceShip extends Character{
     }
     
     void changeNave(char Input, char[][] map){
-        if(Input == 'd' || Input == 'D'){ //nave pro lado direito
+        if(Input == 'd' || Input == 'D'){ //NAVE PRA DIREITA
             for(int j = 0; j < 33; j++){
                 if(j == 32){
                     return;
                 }
-                if(map[9][j] == 'A'){
+                else if(map[9][j] == 'A'){
                     if(map[9][32] == 'A'){
                         return;
                     }
@@ -37,6 +37,7 @@ public class SpaceShip extends Character{
                 if(map[9][j+1] == 'A'){
                     map[9][j+1] = ' ';
                     map[9][j] = 'A';
+                    return;
                 }
             }
         }
