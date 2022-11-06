@@ -24,4 +24,10 @@ public class Barrier extends Character{
             map[8][j] = '=';
         }  
     }
+    
+    @Override
+    public void mover(int sentido){
+        
+    }
+    
 }

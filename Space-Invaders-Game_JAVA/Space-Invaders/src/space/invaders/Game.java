@@ -13,18 +13,20 @@ public class Game{
     
     public static final int LINHAS = 10;
     public static final int COLUNAS = 33;
-    //private ArrayList<Character> cria;
+    
     
     public char[][] map = new char[LINHAS][COLUNAS];
     int score = 0;
     SpaceShip nave = new SpaceShip(1, 4, 3, 'A'); //valores nao oficiais
-    Aliens aliens = new Aliens(4,10, 1, 'x'); //valores nao oficiais
+    Alien alien = new Alien(4,7, 1, 'x'); //valores nao oficiais
     Shot tiro = new Shot(4,7, 1, '|'); //valores nao oficiais
     Barrier barreiras = new Barrier(1, 1, 2, '=');
+    Exercito exercito = new Exercito();
     char Input = '0';
     
     
-    
+    //x (linhas)
+    //y (colunas)
     
     
     
@@ -92,9 +94,12 @@ public class Game{
     
     void Gameplay() throws AWTException{
         ClearScreen();
-        CreateMap();
+        AtualizaFrame();
         nave.SetNave(map);
-        aliens.SetAliens(map);
+        exercito.alocaTela(map);
+        //alocaTela();
+        //alien.SetAlienMap(map);
+        //exercito.setExercito();
         barreiras.SetBarreiras(map);
         AtualizaJogo();
         
@@ -110,7 +115,12 @@ public class Game{
                     return;
                 case 'd':
                 case 'a':
-                    MudaFrame();
+                    AtualizaFrame();
+                    nave.SetNave(map);
+                    barreiras.SetBarreiras(map);
+                    nave.changeNave(Input, map);
+                    exercito.mover(map);
+                    exercito.alocaTela(map);
                     AtualizaJogo();
                     break;
                 default:
@@ -122,7 +132,7 @@ public class Game{
     
     void ClearScreen() { for(int i = 0; i < 19; i++) System.out.println(); }
     
-    public void CreateMap(){
+    public void AtualizaFrame(){
         
         System.out.println("| " + "Score: " + score + "                        |");
         System.out.println(" _________________________________ ");
@@ -168,39 +178,7 @@ public class Game{
        
        
     }
-   
-    
-    void SetNave(){
-        map[9][16] = 'A';
-    }
-   
-    void changeNave(char Input){
-        if(Input == 'd' || Input == 'D'){ //nave pro lado direito
-            for(int j = 0; j < 33; j++){
-                if(j == 32){
-                    return;
-                }
-                if(map[9][j] == 'A'){
-                    if(map[9][32] == 'A'){
-                        return;
-                    }
-                    map[9][j] = ' ';
-                    map[9][j+1] = 'A';
-                    return;
-                }
-            }
-        }
-        
-        if(Input == 'a' || Input == 'A'){ //nave pro lado esquerdo
-            for(int j = 0; j < 32; j++){
-                if(map[9][j+1] == 'A'){
-                    map[9][j+1] = ' ';
-                    map[9][j] = 'A';
-                }
-            }
-        }
-    }
-    
+
     void Quit() throws AWTException{
         Robot robo = new Robot();
         ClearScreen();
@@ -217,43 +195,10 @@ public class Game{
 
     void MudaFrame(){
         
-        changeNave(Input);
+        nave.changeNave(Input, map);
         
         //percorre o mapa inteiro em busca de aliens, para atualizar a posicao deles
-        
-        for(int i = 0; i < LINHAS-1; i++){ 
-            for(int j = 0; j < COLUNAS-1; j++){ 
-                if(j == COLUNAS-2){
-                    if(map[i][j] == 'x'){
-                        map[i][j] = ' ';
-                        map[i+1][j] = 'x';
-                        return;
-                    }
-                }
-                if(map[i][j] == 'x'){
-                    map[i][j] = ' ';
-                    map[i][j+1] = 'x';
-                    return;
-                }
-            }
-        }
-        
-        
-        
-        for(int i = 0; i < LINHAS-1; i++){ 
-            for(int j = 0; j < COLUNAS-1; j += 2){ 
-                if(j == COLUNAS-2){
-                    if(map[i][j] == 'x'){
-                        map[i][j] = ' ';
-                        map[i+1][j] = 'x';
-                        return;
-                    }
-                }
-                cria.add(new Aliens(i, j));
-                }
-            }
-        }
-        
-         
+
+    }  
  
 }  
