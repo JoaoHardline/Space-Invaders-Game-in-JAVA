@@ -1,10 +1,11 @@
 package space.invaders;
 
-import static space.invaders.Game.COLUNAS;
-import static space.invaders.Game.LINHAS;
+import static space.invaders.GameEngine.COLUNAS;
 
-/*
+/**
  * @author joaopedro
+ * Classe que contem os metodos do Exercito de Aliens
+ * Exercito é uma matriz da classe Alien
  */
 
 public class Exercito {
@@ -21,9 +22,13 @@ public class Exercito {
         }
     }
     
+    public void reset(char[][] map){
+        
+    }
+    
     public void alocaTela(char[][] map){
         for(int i = 0; i < 5; i++){
-            for(int j = 0; j < 10; j++){
+            for(int j = 0; j < 10; j++){ //PEGA A LOCALIZACAO DE CADA ALIEN E COLOCA SEU SIMBOLO NA SUA POSICAO NO MAPA
                 int x = exercito[i][j].getX();
                 int y = exercito[i][j].getY();
                 map[x][y] = exercito[i][j].getSimbolo();
@@ -68,11 +73,4 @@ public class Exercito {
         }
     }
     
-    public void reiniciaExercito(char[][] map){
-        for(int i = 0; i < 5; i++){
-            for(int j = 0; j < 10; j++){
-                map[i][2*j] = exercito[i][j].getSimbolo();
-            }
-        }
-    }
 }

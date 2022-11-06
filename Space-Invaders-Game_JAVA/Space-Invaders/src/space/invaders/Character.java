@@ -2,6 +2,7 @@ package space.invaders;
 
 /**
  * @author joaopedro 12731314
+ * Classe abstrata para todas as entidades que se movem no jogo
  */
 
 public abstract class Character { //things that will move on the screen

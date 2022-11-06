@@ -3,11 +3,12 @@ import java.util.*;
 import java.awt.Robot;
 import java.awt.AWTException;
 
-/*
+/**
  * @author joaopedro 12731314
+ * Classe que contem a Engine de funcionamente do jogo.
  */
 
-public class Game{
+public class GameEngine{
     
     public static final int LINHAS = 10;
     public static final int COLUNAS = 33;
@@ -50,7 +51,7 @@ public class Game{
         System.out.println("                                                            *");
         System.out.println();
         System.out.println();
-        robo.delay(1000);
+        robo.delay(3000);
         ClearScreen();
         System.out.println("        Made by João Pedro G. Ferreira With ♡");
         System.out.println();
@@ -60,7 +61,7 @@ public class Game{
         System.out.println();
         System.out.println();
         System.out.println();
-        robo.delay(1000);
+        robo.delay(3000);
     }
     
     void gameINIT() throws AWTException{
@@ -94,7 +95,7 @@ public class Game{
         char command = input.next(".").charAt(0);
         
         while(command != 'q' && command != 's' && command != 'Q' && command != 'S'){
-            System.out.println("    Comando invalido, Digite \"S\" para jogar ou \"Q\" para sair");
+            System.out.println("    Invalid command, type \"S\" to START the game or \"Q\" to QUIT the game");
             command = input.next(".").charAt(0);
         }
         
@@ -105,8 +106,8 @@ public class Game{
         }else{ //INITIALIZE GAMEPLAY
             ClearScreen();
             
-            System.out.println("    Aliens demoniacos estao invadindo a terra!");
-            System.out.println("    PREPARE-SE!");
+            System.out.println("    Demonic Aliens are invading the EARTH!");
+            System.out.println("    GET READY!");
             for(int i = 0; i < 7; i++) System.out.println();
             robo.delay(3000);
             
@@ -129,6 +130,7 @@ public class Game{
     void Gameplay() throws AWTException{
         
         ClearScreen();
+        
         //SET CONFIGURACAO INICIAL
         CreateMap();
         nave.SetNave(map);
@@ -155,13 +157,15 @@ public class Game{
                     
                     for(int j = 0; j < COLUNAS; j++){
                         if(map[9][j] == '☠'){ //SE TIVER ALGUM ALIEN NA LINHA DA NAVE (PERDEU)
+                            exercito = new Exercito();
                             gameOver();
                         }
-                    }    
+                    }
+                    
                     AtualizaFrame();
                     break;
                 default:
-                    System.out.println("Comando invalido.");
+                    System.out.println("    Invalid Command.");
                     break;
             }
         } 
@@ -171,19 +175,19 @@ public class Game{
         ClearScreen();
         lifes = 3; //REINICIA CONTADOR DE VIDA
         Robot robo = new Robot();
-        System.out.println("Você perdeu, a terra agora foi invadida por DEMÔNIOS!!!");
+        System.out.println("    YOUT LOST, THE EARTH HAS BEEN INVADED BY DEMONS!!!");
         for(int i = 0; i < 7; i++) System.out.println();
         robo.delay(3000);
+        
         gameINIT(); //VOLTA PRO INICIO DO JOGO
     }
     
     void ClearScreen() { for(int i = 0; i < 19; i++) System.out.println(); }
     
     public void LimpaRastro(){
-        int i;
-        int j;
-        for(i = 0; i < LINHAS-1; i++){
-            for(j = 0; j < COLUNAS; j++){
+        
+        for(int i = 0; i < LINHAS-1; i++){
+            for(int j = 0; j < COLUNAS; j++){
                 System.out.print(map[i][j] = ' ');
             }
         }
@@ -213,7 +217,7 @@ public class Game{
         for(int i = 0; i < LINHAS; i++){
             System.out.print('|');
             for(int j = 0; j < COLUNAS; j++){
-                System.out.print(map[i][j]);
+                System.out.print(map[i][j]); //EXIBE CONTEUDO DO MAPA
             }
             System.out.println('|');        
         }
@@ -224,15 +228,15 @@ public class Game{
 
     void Quit() throws AWTException{
         Robot robo = new Robot();
-        System.out.println("Tem certeza que deseja sair do jogo? <s/n>");
-        System.out.println("\"s\" para sair, \"n\" para continuar a jogar.");
+        System.out.println("    Are you sure you want to exit the game? <y/n>");
+        System.out.println("    \"y\" to exit the game, \"n\" to continue playing.");
         
         Scanner input = new Scanner(System.in);
         Input = input.next(".").charAt(0);
         
-        if(Input == 's'){
+        if(Input == 'y'){
             ClearScreen();
-            System.out.println("    Fechando o jogo... Obrigado por Jogar!");
+            System.out.println("    Closing the game... Thanks for playing!");
             for(int i = 0; i < 7; i++) System.out.println();
             robo.delay(3000);
             System.exit(0);

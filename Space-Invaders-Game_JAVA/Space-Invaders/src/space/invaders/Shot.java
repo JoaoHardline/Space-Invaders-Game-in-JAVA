@@ -2,7 +2,10 @@ package space.invaders;
 
 /**
  * @author joaopedro
+ * @deprecated Classe que sera implementada os metodos para o tiro da nave
+ * para a primeira parte, nao se fez necessaria a implementacao dos metodos do tiro
  */
+
 public class Shot extends Character{
 
     

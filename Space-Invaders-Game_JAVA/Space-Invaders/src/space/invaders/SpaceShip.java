@@ -2,6 +2,7 @@ package space.invaders;
 
 /*
  * @author joaopedro 12731314
+ * Classe que contem os metodos da nave a qual o jogador controla
  */
 
 public class SpaceShip extends Character{
@@ -12,7 +13,7 @@ public class SpaceShip extends Character{
     }
     
     void SetNave(char[][] map){
-        map[9][16] = 'A';
+        map[9][4] = 'A';
     }
     
     void changeNave(char Input, char[][] map){

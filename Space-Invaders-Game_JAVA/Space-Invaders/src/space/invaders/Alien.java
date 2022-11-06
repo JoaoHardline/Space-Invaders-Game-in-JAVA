@@ -1,10 +1,11 @@
 package space.invaders;
 
-import static space.invaders.Game.COLUNAS;
-import static space.invaders.Game.LINHAS;
+import static space.invaders.GameEngine.COLUNAS;
 
-/*
+/**
  * @author joaopedro
+ * Classe que contem os metodos para tratar cada Alien individualmente
+ * 
  */
 
 public class Alien extends Character{
@@ -25,51 +26,4 @@ public class Alien extends Character{
         }
     }
     
-    
-    
-    
-    
-    /*
-    void SetAlienMap(char[][] map){
-        map[i][j] = simbolo;
-    }
-    */
-    
-    /*
-    void changeAliens(char Input, char[][] map){
-        for(int i = 0; i < LINHAS-1; i++){ 
-            for(int j = 0; j < COLUNAS-1; j++){ 
-                if(j == COLUNAS-2){
-                    if(map[i][j] == 'x'){
-                        map[i][j] = ' ';
-                        map[i+1][j] = 'x';
-                        return;
-                    }
-                }
-                if(map[i][j] == 'x'){
-                    map[i][j] = ' ';
-                    map[i][j+1] = 'x';
-                    return;
-                }
-            }
-        }
-        
-        
-        
-        for(int i = 0; i < LINHAS-1; i++){ 
-            for(int j = 0; j < COLUNAS-1; j += 2){ 
-                if(j == COLUNAS-2){
-                    if(map[i][j] == 'x'){
-                        map[i][j] = ' ';
-                        map[i+1][j] = 'x';
-                        return;
-                    }
-                }
-                //cria.add(new Aliens(i, j));
-                
-            }
-        }
-    }
-    */
-
 }
