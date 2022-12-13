@@ -1,4 +1,4 @@
-package space.invaders.gui;
+package space.invaders;
 
 import java.io.IOException;
 import java.net.URL;
