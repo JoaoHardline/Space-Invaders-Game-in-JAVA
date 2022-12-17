@@ -1,7 +1,7 @@
 package space.invaders;
 
 import GUI.*;
-import Engine.Game;
+import GameEngine.Game;
 import javafx.application.Application;
 
 public class SpaceInvadersGUI {
