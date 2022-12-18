@@ -69,7 +69,7 @@ public class Spaceship extends Entity{
         return shot;
     }
     
-    
+    /*
     public void hit(boolean x){
         
         lifes--;
@@ -78,10 +78,18 @@ public class Spaceship extends Entity{
         }
         game.display.Clear();
         game.display.MsAtingido();
+        game.display.printScreen();
         
-        
+        game.CleanShot();
+        game.wait(1200);
         
     }
+    */
+    
+    public int getLifes(){
+        return lifes;
+    }
+    
     
     
     
