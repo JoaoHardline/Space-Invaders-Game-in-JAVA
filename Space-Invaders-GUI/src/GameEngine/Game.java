@@ -264,25 +264,258 @@ public class Game {
     
     
     public void AlienShoot(){
+        if(getAlienShoot()){
+            //tiros calculados
+            double columnSpaceship = spaceship.getPosX(); //guarda a coluna da nave
+            double columnAlien; //guarda a coluna do alien
+            int alien = -1; //indice do alien no vetor de aliens
+            
+            //procura por um alien que esteja em uma coluna proxima a do canhao
+            for(int i = 0; i < qttAliens; i++){
+                columnAlien = Army.get(i).getPosX();
+                if(columnAlien >= columnSpaceship && columnAlien <= columnSpaceship + 4){
+                    alien = i;
+                    break;
+                }
+            }
+            
+            
+            //percorre as 5 linhas do exercito até achar um apto a atirar
+            for(int i = 0; i < 5; i++){
+                
+                if(alien == -1){
+                    break; //não achou um invasor
+                }
+                
+                Shot shot = Army.get(alien + 11 * i).shoot();
+                
+                if(shot != null){
+                    shot.setSpeed(0, +shot.getHeight()*20);
+                    shots.add(shot);
+                    break;
+                }
+                
+            }    
+        }
+        
+        
+        //tiros aleatorios
+        for(int i = 0; i < phase; i++){
+            if(getAlienShoot()){
+                int j = random.nextInt(55);
+                Shot shot = Army.get(j).shoot();
+                
+                if(shot != null){
+                    shot.setSpeed(0, +shot.getHeight()*20);
+                    shots.add(shot);
+                }
+            }
+        }
+        
         
     }
     
     
+    public boolean getAlienShoot(){
+        int count = 0;
+        for(Shot s : shots){
+            if( !s.getShooter()){
+                count++;
+            }
+        }
+        if(count <= 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    /**
+     * 
+     * @return true se entidade foi atingida por um tiro inimigo 
+     */
+    public boolean Colision(){
+        
+        boolean remove; //condição para remover tiro do vetor de tiros
+        boolean remove2Shots; //quando um tiro acerta o outro
+        boolean hitSpaceship = false;
+        boolean Shooter; //true: jogador, false: alien
+        int secondShot = 0; 
+        
+        
+        //percorre o array de tiros
+        for(int i = 0; i < shots.size(); i++){
+            
+            Shooter = shots.get(i).getShooter();
+            
+            /*
+            //TPosXAtual = Atiro.get(i).PosX; 
+            TPosYAtual = Atiro.get(i).getPosY(); 
+            
+            
+            //define posicao antiga do tiro na coordenada X
+            if(Atirador){ //tiro do player
+                TPosYAntiga = TPosYAtual + Atiro.get(i).getVelX();                 
+            }
+            else{ //tiro de um invasor
+                TPosYAntiga = TPosYAtual + Atiro.get(i).getVelX(); 
+            }
+            */
+            
+            remove = false; //reset
+            remove2Shots = false; //reset
+            
+            
+            
+            //colisao com aliens
+            if(Shooter){ //se tiro foi de alien, nao colide com outros tiros de aliens
+                
+                //percorre array de aliens
+                for(int j = 0; j < qttAliens; j++){
+                    if(!Army.get(j).getDead()){ //se alien ja estiver morto
+                        if(shots.get(i).intersects(Army.get(j))){
+                            
+                            Army.get(j).setDead();
+                            IncreaseScore(Army.get(j).getType());
+                            qttDeadAliens++;
+                            remove = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            
+            //colisao com barreiras
+            for(int j = 0; j < barriers.size(); j++){
+                
+                if(!barriers.get(j).getDestroyed()){ //se a barreira ja estiver destruida
+                    
+                    if(shots.get(i).intersects(barriers.get(j))){
+                        barriers.get(j).setDestroyed();
+                        remove = true;
+                        break;
+                    }
+                    
+                }
+                
+            }
+            
+            //colisao com outros tiros
+            for(int j = i + 1; j < shots.size(); j++){
+                
+                if(shots.get(i).intersects(shots.get(j))){
+                    remove2Shots = true;
+                    secondShot = j;
+                    remove = true;
+                    break;
+                }
+                
+            }
+            
+            
+            //colisao com a nave
+            if(shots.get(i).intersects(spaceship)){
+                remove = true;
+                hitSpaceship = true;
+            }
+            
+            if(remove2Shots == true){
+                shots.remove(secondShot);
+            }
+            if(remove == true){
+                shots.remove(i);
+            }
+            
+        }
+
+        return hitSpaceship;
+    }
     
     
+    public void IncreaseScore(int type){
+        
+        switch(type){
+            case 0:
+                score += 250;
+                break;
+            case 1:
+                score +=150;
+                break;
+            default:
+                score += 100;
+                break;
+        }
+        
+    }
     
     
+    /**
+     * remove todos os tiros do array shots
+     */
+    public void clearShot(){
+        shots.clear();
+    }
     
     
+    public void moveEntities(double Time){
+        spaceship.update(Time);
+        moveArmy(Time);
+        moveShots(Time);
+    }
     
+    public void moveArmy(double Time){
+        double width = Army.get(0).getWidth();
+        
+        boolean changeDirection = false;
+        
+        
+        double posXFirstAlien = Army.get(0).getPosX();
+        double speedXFirstAlien = Army.get(0).getSpeedX();
+        boolean firstAlienDirection = Army.get(0).getDirection();
+        
+        
+        double posXLastAlien = Army.get(10).getPosX();
+        double speedXLastAlien = Army.get(10).getSpeedX();
+        boolean lastAlienDirection = Army.get(10).getDirection();
+        
+        
+        //verifica se algum alien vai ultrapassar o limite esquerdo do mapa
+        if(posXFirstAlien + speedXFirstAlien <= 2 * width && firstAlienDirection){
+            changeDirection = true;
+        }
+        //verifica se algum alien vai ultrapassar o limite direito do mapa
+        if(posXLastAlien + speedXLastAlien >= display.getColunas() - width-10 && !lastAlienDirection){
+            changeDirection = true;
+        } 
+        
+        
+        //Pra cada alien, chama o metodo mover
+        for(int i = 0; i < qttdAliens; i++){
+            Army.get(i).move(changeDirection);
+        }
+        
+        
+        //atualiza a posição
+        for(int i = 0; i < qttAliens; i++){
+            Army.get(i).update(Time);
+        }
+        
+    }
     
-    
-    
-    
-    
-    
-    
-    
+    /**
+     * altera a posicão da nave
+     */
+    public void moveSpaceship(){
+        //move pra esquerda
+        if((spaceship.getPosY()+spaceship.getSpeedY() >= display.getColunas()-1 && !(spaceship.getDirection())) || spaceship.getDirection() ){
+            spaceship.move(true);
+        }
+        
+        if((spaceship.getPosY() - spaceship.getSpeedY() <= 0 && (spaceship.getDirection())) || !spaceship.getDirection()){
+            spaceship.move(false);
+        }
+    }
     
     
     

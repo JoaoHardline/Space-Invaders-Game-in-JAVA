@@ -126,6 +126,11 @@ public class Alien extends Entity{
     }
     
     
+    public void setDead(){
+        dead = true;
+    }
+    
+    
     /**
      * 
      * @param d == true -> esquerda
