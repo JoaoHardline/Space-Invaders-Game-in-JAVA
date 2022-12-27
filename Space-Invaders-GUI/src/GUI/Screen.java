@@ -80,23 +80,20 @@ public class Screen {
      */
     public void msgNextPhase(){
         
-        String msg1 = "Todos os Aliens foram mortos!";
+        String msg1 = "Você tem habilidade! Todos os Aliens foram mortos!";
+        gc.fillText(msg1, canvas.getWidth()*1/3, canvas.getHeight()*2/5);
+        gc.strokeText(msg1, canvas.getWidth()*1/3, canvas.getHeight()*2/5);
+        
         String msg2 = "Vidas Restantes: " + String.valueOf(game.getLifes());
-        String msg3 = "Proxima Fase: " + String.valueOf(game.getPhase());
+        gc.fillText(msg2, canvas.getWidth()*1/3, canvas.getHeight()*2/5 + 100);
+        gc.strokeText(msg2, canvas.getWidth()*1/3, canvas.getHeight()*2/5 + 100);
+        
+        String msg3 = "Proxima Fase: " + String.valueOf(game.getPhase() + 1);
+        gc.fillText(msg3, canvas.getWidth()*1/3, canvas.getHeight()*2/5 + 200);
+        gc.strokeText(msg3, canvas.getWidth()*1/3, canvas.getHeight()*2/5 + 200);        
                 
     }
     
-    
-    /**
-     * é chamada quando os aliens se aproximam demais da nave. a fase recomeça
-     */
-    public void msgSpaceshipDestroyed(){
-        
-        String msg1 = "Sua nave foi destruída!";
-        String msg2 = "Recomeçando a fase...";
-        String msg3 = "Vidas Restantes: " + String.valueOf(game.getLifes());
-        
-    }
     
     /**
      * é chamada quando os aliens invadem o espaço da nave e nao se tem mais vidas

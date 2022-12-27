@@ -232,7 +232,5 @@ public abstract class Entity {
     public String toString(){
         return "Position [" + posX + "," + posY + "]" + " Velocity: [" + speedX + "," + speedY + "]";
     }
-    
-   
-    
+
 }

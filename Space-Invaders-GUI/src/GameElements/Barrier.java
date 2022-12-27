@@ -16,6 +16,12 @@ public class Barrier extends Entity{
     
     
     /**
+     * variavel que armazena o numero de tiros que a barreira levou dos inimigos
+     */
+    private int barrierDamage;
+    
+    
+    /**
      * construtor da barreira
      * @param g jogo que a barreira sera colocada
      * @param x posição horizontal da barreira
@@ -43,7 +49,14 @@ public class Barrier extends Entity{
      * se barreira é atingida, é destruida.
      */
     public void setDestroyed(){
-        destroyed = true;
+        if(barrierDamage >= 3){
+            destroyed = true;
+        }
+    }
+    
+    
+    public void increaseDamage(){
+        barrierDamage++;
     }
     
     
@@ -55,6 +68,5 @@ public class Barrier extends Entity{
     public void move(boolean direction){
         
     }
-    
     
 }

@@ -27,6 +27,16 @@ public class Game {
     
     
     /**
+     *variavel que diz respeito ao status do jogo
+     * 1, se ganhou o jogo
+     * 0, se perdeu o jogo
+     * -1, indefinido
+     * começa indefinido
+     */
+    public int gameStatus = -1;
+    
+    
+    /**
      * numero total de aliens no inicio do jogo
      */
     private final int qttAliens = 55; 
@@ -205,7 +215,7 @@ public class Game {
     
     
     /**
-     * adiciona o desenho/imagem de cada alien na tela
+     * adiciona o desenho/imagem de cada alien na tela, se ele existir (nao estiver morto)
      */
     public void drawAliens(){
         for(int i = 0; i < qttAliens; i++){
@@ -217,7 +227,7 @@ public class Game {
     
     
     /**
-     * adiciona o desenho/imagem de cada barreira na tela
+     * adiciona o desenho/imagem de cada barreira na tela, se ela existir (nao estiver sido destruida)
      */
     public void drawBarriers(){
         for(int i = 0; i < barriers.size(); i++){
@@ -270,10 +280,10 @@ public class Game {
             double columnAlien; //guarda a coluna do alien
             int alien = -1; //indice do alien no vetor de aliens
             
-            //procura por um alien que esteja em uma coluna proxima a do canhao
+            //procura por um alien que esteja em uma coluna proxima a da nave
             for(int i = 0; i < qttAliens; i++){
                 columnAlien = Army.get(i).getPosX();
-                if(columnAlien >= columnSpaceship && columnAlien <= columnSpaceship + 4){
+                if((columnAlien >= columnSpaceship) && (columnAlien <= columnSpaceship + 4)){
                     alien = i;
                     break;
                 }
@@ -316,6 +326,11 @@ public class Game {
     }
     
     
+    /**
+     * verifica se algum alien atirou
+     * @return verdadeiro, se um alien atirou.
+     *               false, se nenhum alien atirou.
+     */
     public boolean getAlienShoot(){
         int count = 0;
         for(Shot s : shots){
@@ -330,9 +345,9 @@ public class Game {
         }
     }
     
+    
     /**
-     * 
-     * @return true se entidade foi atingida por um tiro inimigo 
+     * @return true, se entidade foi atingida por um tiro inimigo 
      */
     public boolean colision(){
         
@@ -347,25 +362,10 @@ public class Game {
         for(int i = 0; i < shots.size(); i++){
             
             Shooter = shots.get(i).getShooter();
-            
-            /*
-            //TPosXAtual = Atiro.get(i).PosX; 
-            TPosYAtual = Atiro.get(i).getPosY(); 
-            
-            
-            //define posicao antiga do tiro na coordenada X
-            if(Atirador){ //tiro do player
-                TPosYAntiga = TPosYAtual + Atiro.get(i).getVelX();                 
-            }
-            else{ //tiro de um invasor
-                TPosYAntiga = TPosYAtual + Atiro.get(i).getVelX(); 
-            }
-            */
-            
+
             remove = false; //reset
             remove2Shots = false; //reset
-            
-            
+
             
             //colisao com aliens
             if(Shooter){ //se tiro foi de alien, nao colide com outros tiros de aliens
@@ -389,10 +389,11 @@ public class Game {
             //colisao com barreiras
             for(int j = 0; j < barriers.size(); j++){
                 
-                if(!barriers.get(j).getDestroyed()){ //se a barreira ja estiver destruida
+                if(!barriers.get(j).getDestroyed()){ //se a barreira nao estiver destruida
                     
                     if(shots.get(i).intersects(barriers.get(j))){
-                        barriers.get(j).setDestroyed();
+                        barriers.get(j).increaseDamage();
+                        barriers.get(j).setDestroyed(); //no entanto, só sera destruida, se a variavel barrierDamage > 3
                         remove = true;
                         break;
                     }
@@ -437,13 +438,13 @@ public class Game {
         
         switch(type){
             case 0:
-                score += 250;
+                score += 25;
                 break;
             case 1:
-                score +=150;
+                score +=15;
                 break;
             default:
-                score += 100;
+                score += 10;
                 break;
         }
         
@@ -459,12 +460,20 @@ public class Game {
     
     
     public void moveEntities(double Time){
+        
         spaceship.update(Time);
         moveArmy(Time);
         moveShots(Time);
+        
     }
     
+    
+    /**
+     * metodo de movimentação do exercito de aliens
+     * @param Time 
+     */
     public void moveArmy(double Time){
+        
         double width = Army.get(0).getWidth();
         
         boolean changeDirection = false;
@@ -559,21 +568,41 @@ public class Game {
      * @param gc 
      */
     public void showInfo(GraphicsContext gc){
-        String Score = "Score: " + score;
-        gc.fillText(Score, 20, 20);
-        gc.strokeText(Score, 20, 20);
+        
+        String Score = "Pontuação: <" + score + ">";
+        gc.fillText(Score, 20, 30);
+        gc.strokeText(Score, 20, 30);
         
         
-        String Phase = "Fase: " + phase;        
-        gc.fillText(Phase, 200, 20);
-        gc.strokeText(Phase, 200, 20);
+        String Phase = "Fase: <" + phase + ">";        
+        gc.fillText(Phase, 700, 30);
+        gc.strokeText(Phase, 700, 30);
         
+        if(spaceship.getLifes() == 1){ //se jogador só tiver uma vida restante
+            
+            String Lifes = "Vidas: "+ "❤";        
+            gc.fillText(Lifes, 1300, 30);
+            gc.strokeText(Lifes, 1300, 30);
+            
+        }
         
-        String Lifes = "Vidas: " + spaceship.getLifes();        
-        gc.fillText(Lifes, 400, 20);
-        gc.strokeText(Lifes, 400, 20);
+        if(spaceship.getLifes() == 2){ //se jogador tiver duas vidas restantes
+            
+            String Lifes = "Vidas: "+ "❤❤";        
+            gc.fillText(Lifes, 1300, 30);
+            gc.strokeText(Lifes, 1300, 30);
+            
+        }
+
+        if(spaceship.getLifes() == 3){ //se jogador tiver três vidas restantes
+            
+            String Lifes = "Vidas: "+ "❤❤❤";        
+            gc.fillText(Lifes, 1300, 30);
+            gc.strokeText(Lifes, 1300, 30);
+            
+        }
+         
     }
-    
     
     
     public int getLifes(){
@@ -599,15 +628,17 @@ public class Game {
      * cria todos os elementos necessários para o jogo funcionar
      */
     public void gameInit(){
+        
         createDisplay();
         createAliens();
         createSpaceship();
         createBarriers();
+        
     }
     
     
     /**
-     * acaba o jogo
+     * imagem e mensagem que aparece quando o jogador perde o jogo
      */
     public void gameOver(){
         display.clear();
@@ -615,29 +646,51 @@ public class Game {
     }
     
     
-    public boolean verifyEnd(){
-        for(int i = 0; i < qttAliens; i++){
-            
-            if(!Army.get(i).getDead()){
-                if(Army.get(i).getPosY() + Army.get(i).getHeight() == barriers.get(0).getPosY()){
-                    return true;
-                }
-            }
-            
-        }
-        
-        if(qttDeadAliens == qttAliens){
-            return true;
-        }
-        if(spaceship.getLifes() <= 0){
-            return true;
-        }
-        return false;
+    public void gameWon(){
+        display.clear();
+        display.msgNextPhase();
     }
     
     
     /**
+     * metodo booleano que indica se jogador ganhou o jogo ou não
+     * @return true, quando jogador ganha o jogo
      * 
+     */
+    public boolean win(){
+        return true;
+    }
+    
+    /**
+     * metodo que verifica se o jogo chegou ao fim ou não
+     * @return true, se jogador sem vidas ou aliens invadiram o espaço da nave
+     *               false, se jogador ainda tem vidas e aliens ainda não invadiram o espaço da nave
+     */
+    public boolean verifyEnd(){
+        
+        for(int i = 0; i < qttAliens; i++){
+            if(!Army.get(i).getDead()){
+                if(Army.get(i).getPosY()   >= barriers.get(0).getPosY() + 60){ //perdeu
+                    gameStatus = 0;
+                    return true;
+                }
+            }
+        }
+        
+        if(qttDeadAliens == qttAliens){ //ganhou
+            gameStatus = 1;
+            return true;
+        }
+        if(spaceship.getLifes() <= 0){ //perdeu
+            gameStatus = 0;
+            return true;
+        }
+        
+        return false;
+    }
+    
+    
+    /** 
      * @param ms tempo, em milissegundos, que o jogo fica parado
      */
     public static void wait(int ms){
@@ -647,7 +700,5 @@ public class Game {
             Thread.currentThread().interrupt();
         }
     }
-    
-    
-    
+     
 }

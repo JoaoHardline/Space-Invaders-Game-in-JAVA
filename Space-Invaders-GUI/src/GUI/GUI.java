@@ -147,9 +147,16 @@ public class GUI extends Application{
                     game.showInfo(gc);
                 }
                 
+                //verifica fim de jogo e qual fim de jogo (vitoria ou perda)
                 if(game.verifyEnd()){
-                    game.gameOver();
-                    this.stop();
+                    if(game.gameStatus == 1){
+                        game.gameWon();
+                        this.stop();
+                    }else if(game.gameStatus == 0){                        
+                        game.gameOver();
+                        this.stop();                        
+                    }
+
                 }
             }
         }.start();
