@@ -32,13 +32,13 @@ public class Alien extends Entity{
         
         switch(type){
             case 0:
-                this.setImage("Assets/alien0.png");
-                break;
-            case 1:
                 this.setImage("Assets/alien1.png");
                 break;
-            default:
+            case 1:
                 this.setImage("Assets/alien2.png");
+                break;
+            default:
+                this.setImage("Assets/alien3.png");
                 break;
         }
         
@@ -62,14 +62,14 @@ public class Alien extends Entity{
     
     /**
      * metodo de movimentacao dos aliens
-     * @param direction se true, movimento para esquerda, 
+     * @param d se true, movimento para esquerda, 
      *                              se false, movimento pra direita
      */
     @Override
-    public void move(boolean direction){
-        if(direction == true){                        //movimento vertical
+    public void move(boolean d){
+        if(d == true){                        //movimento vertical
             
-            this.setSpeed(0, 15*height);
+            this.setSpeed(0, 30*height);
             //posX += speedX;                       //pra baixo
             direction = !direction;                   // inverte a direção
             
@@ -98,7 +98,7 @@ public class Alien extends Entity{
         if(!dead){
             
             Shot shot = new Shot(this.game, posX+width*1/4, posY+height+5, false);
-            shot.setImage("Assets/tiro.png");
+            shot.setImage("Assets/Tiro2.png");
             
             return shot;
             

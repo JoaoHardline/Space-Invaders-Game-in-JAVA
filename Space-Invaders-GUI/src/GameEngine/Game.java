@@ -105,7 +105,7 @@ public class Game {
     public void createSpaceship(){
         
         spaceship = new Spaceship(this, display.getColunas()/2, display.getLinhas() - 100, 0);
-        spaceship.setImage("Assets/spaceship.png");
+        spaceship.setImage("Assets/spaceship5.png");
         
     }
     
@@ -128,11 +128,11 @@ public class Game {
         
         //posicionamento
         for(int i = 0; i < qttAliens; i++){
-            if(i%11 == 0 && i != 0){
+            if(i % 11 == 0 && i != 0){
                 y = y + height + height/2;
                 x = 10;
             }
-            x = x + width + width/2;
+            x = x + width + width / 2;
             Army.get(i).setPosition(x, y);
             Army. get(i).setSpeed(width/2, 0);
         }
@@ -334,7 +334,7 @@ public class Game {
      * 
      * @return true se entidade foi atingida por um tiro inimigo 
      */
-    public boolean Colision(){
+    public boolean colision(){
         
         boolean remove; //condição para remover tiro do vetor de tiros
         boolean remove2Shots; //quando um tiro acerta o outro
@@ -481,7 +481,7 @@ public class Game {
         
         
         //verifica se algum alien vai ultrapassar o limite esquerdo do mapa
-        if(posXFirstAlien + speedXFirstAlien <= 2 * width && firstAlienDirection){
+        if(posXFirstAlien - speedXFirstAlien <= 2 * width && firstAlienDirection){
             changeDirection = true;
         }
         //verifica se algum alien vai ultrapassar o limite direito do mapa
@@ -491,7 +491,7 @@ public class Game {
         
         
         //Pra cada alien, chama o metodo mover
-        for(int i = 0; i < qttdAliens; i++){
+        for(int i = 0; i < qttAliens; i++){
             Army.get(i).move(changeDirection);
         }
         
@@ -517,21 +517,62 @@ public class Game {
         }
     }
     
+    public void moveShots(double Time){
+        //percorre o vetor de tiros
+        for(int i = 0; i< shots.size(); i++){
+            
+            //shots.get(i).move(true);
+            
+            //tiro saindo por cima da tela
+            if(shots.get(i).getPosY() <= 0){
+                shots.remove(i);
+                break;
+            }
+            
+            //tiro saindo por baixo da tela
+            if(shots.get(i).getPosY() >= display.getLinhas()-32){
+                shots.remove(i);
+                break;
+            }
+            shots.get(i).update(Time);
+            
+        }
+    }
     
     
     
+    /**
+     * metodo para aumentar a velocidade dos aliens
+     */
+    public void IncreaseAliensSpeed(){
+        for(int i = 0; i < qttAliens; i++){
+            Army.get(i).increaseSpeed();
+        }
+    }
     
     
+//-------------------------------------------------------------------------------------
     
     
-    
-    
-    
-    
-    
-    
-    
-    
+    /**
+     * especie de hud do jogo
+     * @param gc 
+     */
+    public void showInfo(GraphicsContext gc){
+        String Score = "Score: " + score;
+        gc.fillText(Score, 20, 20);
+        gc.strokeText(Score, 20, 20);
+        
+        
+        String Phase = "Fase: " + phase;        
+        gc.fillText(Phase, 200, 20);
+        gc.strokeText(Phase, 200, 20);
+        
+        
+        String Lifes = "Vidas: " + spaceship.getLifes();        
+        gc.fillText(Lifes, 400, 20);
+        gc.strokeText(Lifes, 400, 20);
+    }
     
     
     
@@ -548,8 +589,64 @@ public class Game {
         return score;
     }
     
+    /*
+    public void gameOpen(){
+        createMenu();
+    }
+    /*
+    
+    /**
+     * cria todos os elementos necessários para o jogo funcionar
+     */
+    public void gameInit(){
+        createDisplay();
+        createAliens();
+        createSpaceship();
+        createBarriers();
+    }
     
     
+    /**
+     * acaba o jogo
+     */
+    public void gameOver(){
+        display.clear();
+        display.msgGameOver();
+    }
+    
+    
+    public boolean verifyEnd(){
+        for(int i = 0; i < qttAliens; i++){
+            
+            if(!Army.get(i).getDead()){
+                if(Army.get(i).getPosY() + Army.get(i).getHeight() == barriers.get(0).getPosY()){
+                    return true;
+                }
+            }
+            
+        }
+        
+        if(qttDeadAliens == qttAliens){
+            return true;
+        }
+        if(spaceship.getLifes() <= 0){
+            return true;
+        }
+        return false;
+    }
+    
+    
+    /**
+     * 
+     * @param ms tempo, em milissegundos, que o jogo fica parado
+     */
+    public static void wait(int ms){
+        try{
+            Thread.sleep(ms);
+        }catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+    }
     
     
     

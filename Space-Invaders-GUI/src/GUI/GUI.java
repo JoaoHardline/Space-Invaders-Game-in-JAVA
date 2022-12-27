@@ -29,25 +29,30 @@ public class GUI extends Application{
     @Override
     public void start(Stage stage) throws Exception{
         
-        stage.setTitle("Space Invaders: Doomed Edition");
+        stage.setTitle("Space Invaders: Doomed Edition"); //NOME DO JOGO
         
-        Image icon = new Image("/Assets/spaceship.png"); //NAO SEI SE O CAMINHO ESTA CORRETO (CONFERIR)
+        Image icon = new Image("/Assets/spaceship5.png");
         stage.getIcons().add(icon); //ADICIONA ICONE DO JOGO NA JANELA
         
         Group root = new Group();
+        
+        //Scene menu = new Scene(root);
+        //Canvas cmenu = new Canvas(1500, 800);
+        
+        
         Scene scene = new Scene(root);
         stage.setScene(scene);
         
         
-        Canvas canvas = new Canvas(1500, 1000);
+        Canvas canvas = new Canvas(1500, 800); 
         root.getChildren().add(canvas);
         
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         
-        Font font = Font.font("Helvetica", FontWeight.BOLD, 24);
+        Font font = Font.font("Fantasy", FontWeight.BOLD, 30);
         gc.setFont(font);
-        gc.setFill(Color.GREEN);
+        gc.setFill(Color.BLUE);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(1);
         
@@ -56,7 +61,7 @@ public class GUI extends Application{
          * inicialização do jogo
          */
         Game game = new Game(gc);
-        game.GameInit(); 
+        game.gameInit(); 
         
         
         /**
@@ -92,25 +97,25 @@ public class GUI extends Application{
                 double timer = 0;
                 
                 
-                //calculate time since last update
+                //calcula o tempo desde o ultimo update
                 double Tempo_Decorrido = (Tempo_Atual - Tempo_Antigo.value)  / 1000000000.0;
                 Tempo_Antigo.value = Tempo_Atual;
-                
-                
-                //gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+               
                 game.display.clear();
                 
                 game.spaceship.setSpeed(0, 0);
+                
                 if( input.contains("LEFT") ){
                     if( !(game.spaceship.getPosX() - 20 <= 0)){
-                        game.spaceship.setSpeed(-290, 0);
+                        game.spaceship.setSpeed(-300, 0);
                     }
                 }
                 
                 
                 if( input.contains("RIGHT")){
                     if( !(game.spaceship.getPosX() + game.spaceship.getWidth() + 20 >= canvas.getWidth())){
-                        game.spaceship.setSpeed(290, 0);
+                        game.spaceship.setSpeed(300, 0);
                     }
                 }
                 
@@ -122,7 +127,9 @@ public class GUI extends Application{
                 
                 game.AlienShoot();
                 game.moveEntities(Tempo_Decorrido);
+                
                 if(game.colision() || timer > 0){
+                    
                     if(timer == 0){
                         timer++;
                         game.spaceship.hit(false);
@@ -140,21 +147,15 @@ public class GUI extends Application{
                     game.showInfo(gc);
                 }
                 
-                if(game.checkEnd()){
+                if(game.verifyEnd()){
                     game.gameOver();
                     this.stop();
                 }
-                
-                
-                
             }
         }.start();
         
         stage.show();
-        
-        
     }
-    
 }
 
 

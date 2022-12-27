@@ -1,6 +1,6 @@
 package GameElements;
 
-import GameEngine.Game;
+import GameEngine.*;
 
 /**
  *
@@ -69,22 +69,20 @@ public class Spaceship extends Entity{
         return shot;
     }
     
-    /*
+    
     public void hit(boolean x){
         
         lifes--;
         if(x){
             return;
         }
-        game.display.Clear();
-        game.display.MsAtingido();
-        game.display.printScreen();
+        game.display.clear();
         
-        game.CleanShot();
-        game.wait(1200);
+        game.clearShot();
+        //game.wait(1200);
         
     }
-    */
+    
     
     public int getLifes(){
         return lifes;

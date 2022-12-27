@@ -16,11 +16,11 @@ import javafx.scene.image.Image;
 public class Screen {
     
     
-    private GraphicsContext gc;
+    private final GraphicsContext gc;
     
-    private Canvas canvas;
+    private final Canvas canvas;
     
-    private Image background;
+    private final Image background;
     
     private final Game game;
     
@@ -36,35 +36,16 @@ public class Screen {
         this.gc = gc;
         this.game = g;
         this.canvas = gc.getCanvas();
-        this.background = new Image("Assets/space.png");
+        this.background = new Image("Assets/space1.jpg");
         
     }
     
-    
-    /**
-     * imprime no console a matriz de char do display.
-     */
-    public void printScreen(){
-        
-    }
-    
-    
+
     /**
      * limpa a tela, pro inicio do jogo
      */
     public void ScreenInit(){
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-    }
-    
-      
-    /**
-     * provavelmente sera removidaaaaaaaaaaaaa
-     * @param linha
-     * @param coluna
-     * @param c 
-     */
-    public void addScreen(int linha, int coluna, char c){
-        //display[linha][coluna] = c;
     }
     
     
@@ -91,25 +72,6 @@ public class Screen {
      */
     public void clear(){
         gc.drawImage(background, 0, 0, canvas.getWidth(), canvas.getHeight());
-    }
-    
-    
-    /**
-     * exibe uma mensagem quando a nave é atingida por um tiro dos aliens
-     */
-    public void msgHit(){
-        
-        String msg1 = "Vidas Restantes: " + String.valueOf(game.getLifes());
-        String msg2 = "Nave Atingida!";
-        
-        
-        gc.fillText(msg1, canvas.getWidth()*2/5, canvas.getHeight()*2/5+50);
-        gc.strokeText(msg1, canvas.getWidth()*2/5, canvas.getHeight()*2/5+50);
-        
-        gc.fillText(msg2, canvas.getWidth()*2/5, canvas.getHeight()*2/5);
-        gc.strokeText(msg2, canvas.getWidth()*2/5, canvas.getHeight()*2/5);
-        
-        
     }
     
     
@@ -143,25 +105,15 @@ public class Screen {
     public void msgGameOver(){
         
         String msg1 = "Sua nave foi destruída e a terra foi INVADIDA!";               
-        gc.fillText(msg1, canvas.getWidth()*2/5, canvas.getHeight()*2/5);
-        gc.strokeText(msg1, canvas.getWidth()*2/5, canvas.getHeight()*2/5);
+        gc.fillText(msg1, canvas.getWidth()*1/3, canvas.getHeight()*2/5);
+        gc.strokeText(msg1, canvas.getWidth()*1/3, canvas.getHeight()*2/5);
         
         String msg2 = "Score: " + String.valueOf(game.getScore());
-        gc.fillText(msg2, canvas.getWidth()*2/5, canvas.getHeight()*2/5 + 50);
-        gc.strokeText(msg2, canvas.getWidth()*2/5, canvas.getHeight()*2/5 + 50);
+        gc.fillText(msg2, canvas.getWidth()*1/3, canvas.getHeight()*2/5 + 100);
+        gc.strokeText(msg2, canvas.getWidth()*1/3, canvas.getHeight()*2/5 + 100);
        
         
     }
-    
-    
-    private void printMsg(double i, double j, String msg){
-        for(int k = 0; k < msg.length(); k++){
-            //display[i][j] = msg.charAt(k);
-            j++;
-        }
-    }
-    
-
     
     
 }

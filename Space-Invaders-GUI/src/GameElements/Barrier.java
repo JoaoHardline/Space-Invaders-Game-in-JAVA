@@ -26,12 +26,12 @@ public class Barrier extends Entity{
         super(g, x, y);
         
         destroyed = false;
-        setImage("Assets/barrier.png"); 
+        setImage("Assets/barrier3.png"); 
         
     }
     
+    
     /**
-     * 
      * @return status atual da barreira
      */
     public boolean getDestroyed(){

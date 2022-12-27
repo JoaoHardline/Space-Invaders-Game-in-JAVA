@@ -29,7 +29,7 @@ public class Shot extends Entity{
         
         shooter = wshoot;
         
-        setImage("Assets/tiro.png");
+        setImage("Assets/Tiro1.png");
     }
     
     
