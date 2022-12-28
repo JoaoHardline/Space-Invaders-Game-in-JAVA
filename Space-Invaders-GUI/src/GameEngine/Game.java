@@ -3,7 +3,6 @@ package GameEngine;
 import GUI.Screen;
 import GameElements.*;
 import javafx.scene.canvas.GraphicsContext;
-import GUI.*;
 import java.util.*;
 
 /**

@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
@@ -104,7 +102,7 @@ public class GUI extends Application{
                 game.spaceship.setSpeed(0, 0);
                 
                 if( input.contains("LEFT") ){
-                    if( !(game.spaceship.getPosX() - 20 <= 0)){
+                    if( !(game.spaceship.getPosX() - 30 <= 0)){
                         game.spaceship.setSpeed(-300, 0);
                     }
                 }
@@ -131,7 +129,7 @@ public class GUI extends Application{
                         timer++;
                         game.spaceship.hit(false);
                     }
-                    else if(timer >= 999999999*999999999){
+                    else if(timer >= 1000000000*1000000){
                         timer = 0;
                     }
                     else{
