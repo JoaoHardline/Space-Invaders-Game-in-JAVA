@@ -37,6 +37,16 @@ public class Barrier extends Entity{
     }
     
     
+     /**
+     * barreira nao se move, portanto, metodo vazio
+     * @param direction direção de movimento
+     */
+    @Override
+    public void move(boolean direction){
+        
+    }
+    
+    
     /**
      * @return status atual da barreira
      */
@@ -57,16 +67,6 @@ public class Barrier extends Entity{
     
     public void increaseDamage(){
         barrierDamage++;
-    }
-    
-    
-    /**
-     * barreira nao se move, portanto, metodo vazio
-     * @param direction direção de movimento
-     */
-    @Override
-    public void move(boolean direction){
-        
     }
     
 }

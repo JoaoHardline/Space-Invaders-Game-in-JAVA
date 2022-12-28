@@ -60,6 +60,9 @@ public class Game {
     public Screen display;
     
     
+    public long value;
+    
+    
     /**
      * Vetor de Aliens (exercito)
      */
@@ -174,12 +177,7 @@ public class Game {
         display = new Screen(gc, this);
         display.ScreenInit();
     }
-    
-    
-    
-   
-    
-    
+
     
 /* ---------------------------------------------------- metodos para adicionar graficos/desenhos na tela ----------------------------------------------------*/
     
@@ -273,7 +271,11 @@ public class Game {
     }
     
     
+    /**
+     * 
+     */
     public void AlienShoot(){
+        
         if(getAlienShoot()){
             //tiros calculados
             double columnSpaceship = spaceship.getPosX(); //guarda a coluna da nave
@@ -434,14 +436,19 @@ public class Game {
     }
     
     
+    /**
+     * para cada tipo de alien, o score é diferente. 
+     * @param type serve para decidir qual é o tipo de alien eliminado e qual sera o score ganho
+     *                      baseado no tipo do alien eliminado
+     */
     public void IncreaseScore(int type){
         
-        switch(type){
+        switch (type) {
             case 0:
                 score += 25;
                 break;
             case 1:
-                score +=15;
+                score += 15;
                 break;
             default:
                 score += 10;
@@ -521,16 +528,21 @@ public class Game {
             spaceship.move(true);
         }
         
+        //move pra direita
         if((spaceship.getPosY() - spaceship.getSpeedY() <= 0 && (spaceship.getDirection())) || !spaceship.getDirection()){
             spaceship.move(false);
         }
     }
     
+    
+    /**
+     * metodo de movimentacao dos tiros
+     * @param Time recebe esse parametro para que seja possivel calcular o tempo de subida/descida da bala
+     */
     public void moveShots(double Time){
         //percorre o vetor de tiros
         for(int i = 0; i< shots.size(); i++){
             
-            //shots.get(i).move(true);
             
             //tiro saindo por cima da tela
             if(shots.get(i).getPosY() <= 0){
@@ -618,11 +630,6 @@ public class Game {
         return score;
     }
     
-    /*
-    public void gameOpen(){
-        createMenu();
-    }
-    /*
     
     /**
      * cria todos os elementos necessários para o jogo funcionar
@@ -646,20 +653,15 @@ public class Game {
     }
     
     
+    /**
+     * imagem e mensagem que aparece quando o jogador ganha o jogo
+     */
     public void gameWon(){
         display.clear();
         display.msgNextPhase();
     }
     
     
-    /**
-     * metodo booleano que indica se jogador ganhou o jogo ou não
-     * @return true, quando jogador ganha o jogo
-     * 
-     */
-    public boolean win(){
-        return true;
-    }
     
     /**
      * metodo que verifica se o jogo chegou ao fim ou não
@@ -700,5 +702,10 @@ public class Game {
             Thread.currentThread().interrupt();
         }
     }
+    
+    public void LongValue(long i){
+        value = i;
+    }
+    
      
 }

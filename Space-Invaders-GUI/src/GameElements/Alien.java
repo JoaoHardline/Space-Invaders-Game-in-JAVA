@@ -95,7 +95,7 @@ public class Alien extends Entity{
      */
     public Shot shoot(){
         
-        if(!dead){
+        if(!dead){ 
             
             Shot shot = new Shot(this.game, posX+width*1/4, posY+height+5, false);
             shot.setImage("Assets/Tiro2.png");

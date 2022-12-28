@@ -19,7 +19,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 /**
- *
  * @author João Pedro Gonçalves Ferreira - nºUSP: 12731314 
  */
 
@@ -27,36 +26,33 @@ public class GUI extends Application{
     
     
     @Override
-    public void start(Stage stage) throws Exception{
+    public void start(Stage stage){
         
-        stage.setTitle("Space Invaders: Doomed Edition"); //NOME DO JOGO
+        stage.setTitle("Space Invaders: Doomed Edition"); //nome do jogo
         
         Image icon = new Image("/Assets/spaceship5.png");
-        stage.getIcons().add(icon); //ADICIONA ICONE DO JOGO NA JANELA
+        stage.getIcons().add(icon); //idiciona o icone do jogo na tela
         
         Group root = new Group();
-        
-        //Scene menu = new Scene(root);
-        //Canvas cmenu = new Canvas(1500, 800);
         
         
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(false); //impede a alteraração o tamanho da janela
         
-        
-        Canvas canvas = new Canvas(1500, 800); 
+        Canvas canvas = new Canvas(1600, 800); 
         root.getChildren().add(canvas);
         
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         
-        Font font = Font.font("Fantasy", FontWeight.BOLD, 30);
+        Font font = Font.font("Courier", FontWeight.BOLD, 30);
         gc.setFont(font);
         gc.setFill(Color.BLUE);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(1);
         
-        
+
         /**
          * inicialização do jogo
          */
@@ -73,7 +69,9 @@ public class GUI extends Application{
         
             String code = event.getCode().toString();
             
-            if(!input.contains(code)) input.add(code);
+            if(!input.contains(code)){
+                input.add(code);
+            }
         
         });
         
@@ -81,25 +79,24 @@ public class GUI extends Application{
         scene.setOnKeyReleased((KeyEvent event) -> {
         
             String code = event.getCode().toString();
-            
             input.remove(code);
         
         });
         
         
-        LongValue Tempo_Antigo = new LongValue(System.nanoTime());
+        LongValue older_time = new LongValue(System.nanoTime());
         
         
         new AnimationTimer(){
             
             @Override
-            public void  handle(long Tempo_Atual){
+            public void  handle(long actual_time){
                 double timer = 0;
                 
                 
                 //calcula o tempo desde o ultimo update
-                double Tempo_Decorrido = (Tempo_Atual - Tempo_Antigo.value)  / 1000000000.0;
-                Tempo_Antigo.value = Tempo_Atual;
+                double time_spent = (actual_time - older_time.value)  / 1000000000.0;
+                older_time.value = actual_time;
 
                
                 game.display.clear();
@@ -113,7 +110,7 @@ public class GUI extends Application{
                 }
                 
                 
-                if( input.contains("RIGHT")){
+                if( input.contains("RIGHT") ){
                     if( !(game.spaceship.getPosX() + game.spaceship.getWidth() + 20 >= canvas.getWidth())){
                         game.spaceship.setSpeed(300, 0);
                     }
@@ -126,7 +123,7 @@ public class GUI extends Application{
                 
                 
                 game.AlienShoot();
-                game.moveEntities(Tempo_Decorrido);
+                game.moveEntities(time_spent);
                 
                 if(game.colision() || timer > 0){
                     
@@ -142,7 +139,6 @@ public class GUI extends Application{
                     }
                 }
                 else{
-                    System.out.println(" ");
                     game.drawEntities();
                     game.showInfo(gc);
                 }
@@ -151,6 +147,7 @@ public class GUI extends Application{
                 if(game.verifyEnd()){
                     if(game.gameStatus == 1){
                         game.gameWon();
+                        
                         this.stop();
                     }else if(game.gameStatus == 0){                        
                         game.gameOver();

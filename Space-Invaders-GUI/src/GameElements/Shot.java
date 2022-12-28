@@ -21,7 +21,7 @@ public class Shot extends Entity{
      * @param g jogo que o tiro sera colocado
      * @param x posicao no eixo horizontal
      * @param y posicao no eixo vertical
-     * @param wshoot difere quem cirou o tiro (who shoot)
+     * @param wshoot difere quem criou o tiro (who shoot)
      */
     public Shot(Game g, double x, double y, boolean wshoot){
         
@@ -34,8 +34,10 @@ public class Shot extends Entity{
     
     
     /**
+     * metodo de movimentação dos tiros
      * 
-     * @param direction 
+     * @param direction se true, tiro vai de baixo pra cima,
+     *                             se false, tiro vai de cima pra baixo
      */
     @Override
     public void move(boolean direction){

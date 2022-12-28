@@ -19,7 +19,7 @@ public class Spaceship extends Entity{
      * variavel para controlar a quantidade de tiros 
      * (evitar muitos tiros, que tirariam a dinamica do jogo)
      */
-    private int delayShot;
+    private final int delayShot;
     
     
     /**
@@ -87,10 +87,6 @@ public class Spaceship extends Entity{
     public int getLifes(){
         return lifes;
     }
-    
-    
-    
-    
-    
+
     
 }
